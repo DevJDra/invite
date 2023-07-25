@@ -31,7 +31,6 @@ public class MemberController {
         if (result.hasErrors()) {
             return "members/addMemberForm";
         }
-        memberService.findAll(member);
         memberService.save(member);
         return "redirect:/";
     }

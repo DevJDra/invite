@@ -5,7 +5,7 @@
 
     <insert id="save" parameterType="Member">
         INSERT INTO MEMBER (
-            MEMBER_ID,     MEMBER_PASSWORD,    NAME
+            ID,     PASSWORD,    NAME
         ) VALUES (
             #{loginId}   ,#{password}    ,#{name}
         )
