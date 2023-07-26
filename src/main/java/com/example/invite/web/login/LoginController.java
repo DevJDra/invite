@@ -53,7 +53,7 @@ public class LoginController {
         return "redirect:/";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         //세션을 삭제한다
         HttpSession session = request.getSession(false);
