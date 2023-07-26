@@ -7,7 +7,7 @@
         INSERT INTO MEMBER (
             ID,     PASSWORD,    NAME
         ) VALUES (
-            #{loginId}   ,#{password}    ,#{name}
+            #{id}   ,#{password}    ,#{name}
         )
     </insert>
 
@@ -21,6 +21,6 @@
             ,   PASSWORD
             ,   NAME
         FROM    MEMBER
-        WHERE ID = #{loginId}
+        WHERE ID = #{id}
     </select>
 </mapper>
