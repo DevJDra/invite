@@ -1,7 +1,6 @@
 package com.example.invite.web.login;
 
 import com.example.invite.SessionConst;
-import com.example.invite.domain.login.Login;
 import com.example.invite.domain.login.LoginService;
 import com.example.invite.domain.member.Member;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +23,16 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginForm") Login form) {
-        return "login/loginForm";
+    public String loginForm(@ModelAttribute LoginForm form) {
+        return "login/login";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute Login form, BindingResult bindingResult
+    public String login(@Valid @ModelAttribute LoginForm form, BindingResult bindingResult
         , HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
-            return "login/loginForm";
+            return "login/login";
         }
 
         Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
@@ -41,7 +40,7 @@ public class LoginController {
 
         if (loginMember == null) {
             bindingResult.reject("loginFail", ":아이디 또는 비밀번호가 맞지 않습니다.");
-            return "login/loginForm";
+            return "login/login";
         }
 
         //로그인 성공처리

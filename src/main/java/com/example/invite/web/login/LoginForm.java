@@ -1,11 +1,11 @@
-package com.example.invite.domain.login;
+package com.example.invite.web.login;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 
 @Data
-public class Login {
+public class LoginForm {
 
     @NotEmpty
     private String loginId;
