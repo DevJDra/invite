@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{default}"
+      layout:fragment="Content">
+<head>
+    <title>SB Admin 2 - Blank</title>
+</head>
+<style>
+    #root {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .contents {
+        display: flex;
+        flex-direction: row;
+        margin-top: 30px;
+    }
+    .contents .upload-box {
+        width: calc(50% - 15px);
+        box-sizing: border-box;
+        margin-right: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .contents .upload-box .drag-file {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 3px dashed #dbdbdb;
+    }
+    .contents .upload-box .drag-file.highlight {
+        border: 3px dashed red;
+    }
+    .contents .upload-box .drag-file .image {
+        width: 40px;
+    }
+    .contents .upload-box .drag-file .message {
+        margin-bottom: 0;
+    }
+    .contents .upload-box .file-label {
+        margin-top: 30px;
+        background-color: #5b975b;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+        width: 65%;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .contents .upload-box .file {
+        display: none;
+    }
+
+    .contents .files {
+        width: calc(50% - 15px);
+        box-sizing: border-box;
+        overflow: auto;
+        height: 360px;
+    }
+    .contents .files .file {
+        display: flex;
+        padding: 20px 20px;
+        border-bottom: 1px solid #dbdbdb;
+    }
+    .contents .files .file:last-child {
+        margin-bottom: 0px;
+        border-bottom: none;
+    }
+
+    .contents .files .file .thumbnail {
+        display: flex;
+        flex: none;
+        width: 50px;
+        margin-right: 20px;
+        align-items: center;
+    }
+    .contents .files .file .thumbnail .image {
+        width: 100%;
+    }
+
+    .contents .files .file .details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .contents .files .file .details .header {
+        display: flex;
+    }
+    .contents .files .file .details .header .name {
+        width: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .contents .files .file .details .header .size {
+        margin-left: auto;
+    }
+
+    .contents .files .file .progress {
+        position: relative;
+        height: 6px;
+        background-color: #dbdbdb;
+        overflow: hidden;
+        margin-top: 4px;
+        border-radius: 10px;
+    }
+    .contents .files .file .progress .bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #5b975b;
+    }
+
+    .contents .files .file .status {
+        display: flex;
+        width: 100%;
+    }
+    .contents .files .file .status .percent {
+    }
+    .contents .files .file .status .speed {
+        margin-left: auto;
+    }
+
+    @media(max-width: 700px) {
+        .contents {
+            display: flex;
+            flex-direction: column;
+            margin-top: 30px;
+        }
+        .contents .upload-box {
+            width: 100%;
+            box-sizing: border-box;
+            margin-right: 0;
+        }
+        .contents .upload-box .drag-file {
+            height: 150px;
+        }
+        .contents .files {
+            width: 100%;
+            box-sizing: border-box;
+            margin-right: 0;
+            overflow: initial;
+        }
+    }
+    .upload-box {
+        width: 100%;
+        box-sizing: border-box;
+        margin-right: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .upload-box .drag-file {
+        position: relative;
+        width: 100%;
+        height: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 3px dashed #dbdbdb;
+    }
+    .upload-box .drag-file.highlight {
+        border: 3px dashed red;
+    }
+    .upload-box .drag-file .image {
+        width: 40px;
+    }
+    .upload-box .drag-file .message {
+        margin-bottom: 0;
+    }
+    .upload-box .drag-file .preview {
+        display: none;
+        position: absolute;
+        left: 0;
+        height: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .upload-box .drag-file .image {
+        width: 40px;
+    }
+</style>
+<body>
+<!-- Main Content -->
+<div>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+        <!-- Content Row -->
+        <div class="row">
+            <!-- Grow In Utility -->
+            <div class="col-lg-6">
+                <div class="card position-relative">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">초대장 제작</h6>
+                    </div>
+                    <div class="card-body">
+                        <main>
+                            <div class="row g-5">
+                                <div class="col-md-5 col-lg-4">
+                                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="text-primary">초대장 프레임 선택</span>
+<!--                                        <span class="badge bg-primary rounded-pill">3</span>-->
+                                    </h4>
+                                    <ul class="list-group mb-3" id="frameUl">
+                                        <li class="list-group-item d-flex justify-content-between lh-sm"
+                                            onclick="selectFrame(this);" onmouseover="mouseOverFrame(event);" onmouseout="mouseOutFrame(event);">
+                                            <div class="text-success">
+                                                <h6 class="my-0">집들이</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">모임</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">생일</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">여행</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">반려동물</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">술자리</h6>
+                                            </div>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                                            <div>
+                                                <h6 class="my-0">특별제작</h6>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-7 col-lg-8">
+                                    <form class="needs-validation" novalidate>
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="Date" class="form-label">페이지정보</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="Date" class="form-label">일정</label>
+                                                <div class='input-group' id='datetimepicker1' data-td-target-input='nearest' data-td-target-toggle='nearest'>
+                                                    <input id='datetimepicker1Input' type='text' class='form-control' data-td-target='#datetimepicker1'/>
+                                                    <span class='input-group-text' data-td-target='#datetimepicker1' data-td-toggle='datetimepicker'>
+                                                        <span class='fa-solid fa-calendar'></span>
+                                                   </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="text" class="form-label">파티주소</label>
+                                                <input type="text" class="form-control" id="mainText" placeholder="">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="text" class="form-label">메인문구</label>
+                                                <input type="text" class="form-control" id="mainText" placeholder="메인문구">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="text" class="form-label">서브문구</label>
+                                                <input type="text" class="form-control" id="mainText" placeholder="서브문구">
+                                            </div>
+
+                                        </div>
+
+                                        <hr class="my-4">
+                                        <h4 class="mb-3">사진 업로드</h4>
+                                        <div class="my-3">
+                                            <div id="root">
+                                                <div class="contents">
+                                                    <div class="upload-box">
+                                                        <div id="drop-file" class="drag-file">
+                                                            <img src="" alt="미리보기 이미지" class="preview">
+                                                            <p class="message">Drag files to upload</p>
+                                                        </div>
+                                                        <label class="file-label" for="chooseFile">Choose File</label>
+                                                        <input class="file" id="chooseFile" type="file" multiple onchange="dropFile.handleFiles(this.files)">
+                                                    </div>
+                                                    <div id="files" class="files">
+                                                        <div class="file">
+                                                            <div class="thumbnail">
+                                                            </div>
+                                                            <div class="details">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <h4 class="mb-3">GUEST BOOK</h4>
+
+                                        <div class="my-3">
+                                            <div class="form-check">
+                                                <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                                                <label class="form-check-label" for="credit">사용</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
+                                                <label class="form-check-label" for="debit">미사용</label>
+                                            </div>
+                                        </div>
+                                        <hr class="my-4">
+                                        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+            </div>
+            <!-- Fade In Utility -->
+            <div class="col-lg-6">
+                <div class="card position-relative">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</div>
+
+</body>
+<script>
+    $(document).ready(function(){
+        const liElements = document.querySelectorAll('#frameUl li');
+        liElements.forEach((li) => {
+            li.addEventListener('click',function(){
+                selectFrame(this);
+            });
+
+            li.addEventListener('mouseover', function(){
+                mouseOverFrame(event);
+            });
+
+            li.addEventListener('mouseout', function(){
+                mouseOutFrame(event);
+
+            });
+        });
+
+        new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
+            display: {
+                components: {
+                    seconds: false,
+                    useTwentyfourHour: false,
+                },
+                icons: {
+                    type: 'icons',
+                    time: 'fa fa-solid fa-clock',
+                    date: 'fa fa-solid fa-calendar',
+                    up: 'fa fa-solid fa-arrow-up',
+                    down: 'fa fa-solid fa-arrow-down',
+                    previous: 'fa fa-solid fa-chevron-left',
+                    next: 'fa fa-solid fa-chevron-right',
+                    today: 'fa fa-solid fa-calendar-check',
+                    clear: 'fa fa-solid fa-trash',
+                    close: 'fas fa-solid fa-xmark'
+                },
+            },
+        });
+    });
+    function selectFrame(liElement) {
+        $('.text-success').removeClass();
+        const divElement = $(liElement).children('div');
+        $(divElement).attr('class', 'text-success');
+    }
+
+    function mouseOverFrame(event) {
+        $(event.target).attr('class','list-group-item d-flex justify-content-between bg-light');
+    }
+
+    function mouseOutFrame(event) {
+        $(event.target).attr('class','list-group-item d-flex justify-content-between lh-sm');
+    }
+
+    function DropFile(dropAreaId, fileListId) {
+        let dropArea = document.getElementById(dropAreaId);
+        let fileList = document.getElementById(fileListId);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            preventDefaults(e);
+            dropArea.classList.add("highlight");
+        }
+
+        function unhighlight(e) {
+            preventDefaults(e);
+            dropArea.classList.remove("highlight");
+        }
+
+        function handleDrop(e) {
+            unhighlight(e);
+            let dt = e.dataTransfer;
+            let files = dt.files;
+
+            handleFiles(files);
+
+            const fileList = document.getElementById(fileListId);
+            if (fileList) {
+                fileList.scrollTo({ top: fileList.scrollHeight });
+            }
+        }
+
+        function handleFiles(files) {
+            files = [...files];
+            files.forEach(previewFile);
+        }
+
+        function previewFile(file) {
+            console.log(file);
+            fileList.appendChild(renderFile(file));
+        }
+
+        let subImgCnt = 0;
+        function renderFile(file) {
+
+            let subImgId = '#subImg'+subImgCnt;
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = function () {
+                let img = dropArea.getElementsByClassName("preview")[0];
+                $(subImgId).prop('src',reader.result);
+                img.src = reader.result;
+                img.style.display = "block";
+            };
+
+            let fileDOM = document.createElement("div");
+            fileDOM.className = "file";
+            fileDOM.innerHTML = `
+                  <div class="thumbnail">
+                    <img src="" id="" alt="미리보기 이미지" class="preview" style="width:45px;">
+                  </div>
+                  <div class="details">
+                    <header class="header">
+                      <span class="name">${file.name}</span>
+                      <span class="size">${file.size}</span>
+                    </header>
+                    <div class="progress">
+                      <div class="bar"></div>
+                    </div>
+                    <div class="status">
+                      <span class="percent">100% done</span>
+                    </div>
+                  </div>
+                `;
+            subImgCnt++;
+            return fileDOM;
+        }
+
+        dropArea.addEventListener("dragenter", highlight, false);
+        dropArea.addEventListener("dragover", highlight, false);
+        dropArea.addEventListener("dragleave", unhighlight, false);
+        dropArea.addEventListener("drop", handleDrop, false);
+
+        return {
+            handleFiles
+        };
+    }
+
+    const dropFile = new DropFile("drop-file", "files");
+</script>
+</html>

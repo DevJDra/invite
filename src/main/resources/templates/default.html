@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head th:replace="config :: ConfigFragment">
+  <title>공통 타이틀</title>
+</head>
+
+<body id="page-top">
+<!--Content 내용 영역을 참조합니다-->
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <!--Header 영역을 참조합니다.-->
+    <sidebar th:replace="sidebar :: SidebarFragment"></sidebar>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+        <!--Header 영역을 참조합니다.-->
+        <header th:replace="header :: HeaderFragment"></header>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+          <th:block layout:fragment="Content"></th:block>
+        </div>
+      </div>
+      <!-- End of Main Content -->
+      <!--Footer 영역을 참조합니다.-->
+      <footer th:replace="footer :: FooterFragment"></footer>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+<!-- End of Page Wrapper -->
+</body>
+</html>
